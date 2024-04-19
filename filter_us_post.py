@@ -82,5 +82,11 @@ geo_code_df.drop(['population', 'engineers', 'hurricanes'], axis=1, inplace=True
 result_df = pd.merge(result_df, geo_code_df, on='state', how='left')
 result_df['id'] = result_df['id'].astype(int)
 
+# add lat/long of state capital
+state_geo_df = pd.read_csv('states.csv')
+state_geo_df.rename(columns={'state': 'code'}, inplace=True)
+state_geo_df.drop(['name'], axis=1, inplace=True)
+result_df = pd.merge(result_df, state_geo_df, on='code', how='left')
+
 # Write DataFrame to CSV file
 result_df.to_csv('us_post_office_processed.csv', index=False)
